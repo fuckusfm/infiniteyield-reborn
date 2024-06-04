@@ -3,7 +3,7 @@ A forked **IY** but **better**.
 
 Loadstring:
 ```lua
-loadstring(game:HttpGet("https://github.com/fuckusfm/infiniteyield-reborn/raw/master/source"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mireyacs/infiniteyield-reborn-reborn/master/source"))()
 ```
 ## +400 Commands
 
@@ -17,7 +17,7 @@ loadstring(game:HttpGet("https://github.com/fuckusfm/infiniteyield-reborn/raw/ma
 # Reborn developers
 ### Reborn: _Real
 
-### Developer: FurryBoy
+### Developer: azula.cs
 ### Developer: AwesomeDudeIsHere
 
 ## Contributing
