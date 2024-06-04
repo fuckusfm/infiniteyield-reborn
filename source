@@ -6864,103 +6864,104 @@ end)
 local canOpenServerIist = true
 addcmd('serverlist',{'slist'},function(args, speaker)
 	if httprequest then
-		if not canOpenServerIist then return end
-		task.spawn(function()
-			canOpenServerIist = false
-			local FRAME = Instance.new("Frame")
-			local shadow = Instance.new("Frame")
-			local PopupText = Instance.new("TextLabel")
-			local Exit = Instance.new("TextButton")
-			local ExitImage = Instance.new("ImageLabel")
-			local background = Instance.new("Frame")
-			local refreshbutton = Instance.new("TextButton")
-			local ScrollingFrame = Instance.new("ScrollingFrame")
-			local UIListLayout = Instance.new("UIListLayout")
+        local listreq = httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId)})
+        local listbody = HttpService:JSONDecode(listreq.Body)
 
-			FRAME.Name = randomString()
-			FRAME.Parent = PARENT
-			FRAME.Active = true
-			FRAME.BackgroundTransparency = 1
-			FRAME.Position = UDim2.new(0.5, -225, 0, -500)
-			FRAME.Size = UDim2.new(0, 450, 0, 20)
-			FRAME.ZIndex = 10
-			dragGUI(FRAME)
+        if listbody and listbody.data then
+			if not canOpenServerIist then return end
+				canOpenServerIist = false
+				local FRAME = Instance.new("Frame")
+				local shadow = Instance.new("Frame")
+				local PopupText = Instance.new("TextLabel")
+				local Exit = Instance.new("TextButton")
+				local ExitImage = Instance.new("ImageLabel")
+				local background = Instance.new("Frame")
+				local refreshbutton = Instance.new("TextButton")
+				local ScrollingFrame = Instance.new("ScrollingFrame")
+				local UIListLayout = Instance.new("UIListLayout")
 
-			shadow.Name = "shadow"
-			shadow.Parent = FRAME
-			shadow.BackgroundColor3 = currentShade2
-			shadow.BorderSizePixel = 0
-			shadow.Size = UDim2.new(0, 450, 0, 20)
-			shadow.ZIndex = 10
-			table.insert(shade2,shadow)
+				FRAME.Name = randomString()
+				FRAME.Parent = PARENT
+				FRAME.Active = true
+				FRAME.BackgroundTransparency = 1
+				FRAME.Position = UDim2.new(0.5, -225, 0, -500)
+				FRAME.Size = UDim2.new(0, 450, 0, 20)
+				FRAME.ZIndex = 10
+				dragGUI(FRAME)
 
-			PopupText.Name = "PopupText"
-			PopupText.Parent = shadow
-			PopupText.BackgroundTransparency = 1
-			PopupText.Size = UDim2.new(1, 0, 0.95, 0)
-			PopupText.ZIndex = 10
-			PopupText.Font = Enum.Font.SourceSans
-			PopupText.TextSize = 14
-			PopupText.Text = "Servers List"
-			PopupText.TextColor3 = currentText1
-			PopupText.TextWrapped = true
-			table.insert(text1,PopupText)
+				shadow.Name = "shadow"
+				shadow.Parent = FRAME
+				shadow.BackgroundColor3 = currentShade2
+				shadow.BorderSizePixel = 0
+				shadow.Size = UDim2.new(0, 450, 0, 20)
+				shadow.ZIndex = 10
+				table.insert(shade2,shadow)
 
-			Exit.Name = "Exit"
-			Exit.Parent = shadow
-			Exit.BackgroundTransparency = 1
-			Exit.Position = UDim2.new(1, -20, 0, 0)
-			Exit.Size = UDim2.new(0, 20, 0, 20)
-			Exit.Text = ""
-			Exit.ZIndex = 10
+				PopupText.Name = "PopupText"
+				PopupText.Parent = shadow
+				PopupText.BackgroundTransparency = 1
+				PopupText.Size = UDim2.new(1, 0, 0.95, 0)
+				PopupText.ZIndex = 10
+				PopupText.Font = Enum.Font.SourceSans
+				PopupText.TextSize = 14
+				PopupText.Text = "Servers List"
+				PopupText.TextColor3 = currentText1
+				PopupText.TextWrapped = true
+				table.insert(text1,PopupText)
 
-			ExitImage.Parent = Exit
-			ExitImage.BackgroundColor3 = Color3.new(1, 1, 1)
-			ExitImage.BackgroundTransparency = 1
-			ExitImage.Position = UDim2.new(0, 5, 0, 5)
-			ExitImage.Size = UDim2.new(0, 10, 0, 10)
-			ExitImage.Image = "rbxassetid://5054663650"
-			ExitImage.ZIndex = 10
+				Exit.Name = "Exit"
+				Exit.Parent = shadow
+				Exit.BackgroundTransparency = 1
+				Exit.Position = UDim2.new(1, -20, 0, 0)
+				Exit.Size = UDim2.new(0, 20, 0, 20)
+				Exit.Text = ""
+				Exit.ZIndex = 10
 
-			refreshbutton.Name = "RefreshButton"
-			refreshbutton.Parent = shadow
-			refreshbutton.Text = "Refresh"
-			refreshbutton.BackgroundColor3 = currentShade3
-			refreshbutton.Position = UDim2.new(1, -80, 0.14, 0)
-			refreshbutton.Size = UDim2.new(0, 50, 0, 14)
-			refreshbutton.ZIndex = 10
-			refreshbutton.Font = Enum.Font.SourceSans
-			refreshbutton.TextSize = 14
-			refreshbutton.TextColor3 = currentText1
-			refreshbutton.TextWrapped = true
-			refreshbutton.BorderSizePixel = 0
+				ExitImage.Parent = Exit
+				ExitImage.BackgroundColor3 = Color3.new(1, 1, 1)
+				ExitImage.BackgroundTransparency = 1
+				ExitImage.Position = UDim2.new(0, 5, 0, 5)
+				ExitImage.Size = UDim2.new(0, 10, 0, 10)
+				ExitImage.Image = "rbxassetid://5054663650"
+				ExitImage.ZIndex = 10
 
-			background.Name = "background"
-			background.Parent = FRAME
-			background.Active = true
-			background.BackgroundColor3 = currentShade1
-			background.BorderSizePixel = 0
-			background.Position = UDim2.new(0, 0, 1, 0)
-			background.Size = UDim2.new(0, 450, 0, 250)
-			background.ZIndex = 10
-			table.insert(shade1,background)
+				refreshbutton.Name = "RefreshButton"
+				refreshbutton.Parent = shadow
+				refreshbutton.Text = "Refresh"
+				refreshbutton.BackgroundColor3 = currentShade3
+				refreshbutton.Position = UDim2.new(1, -80, 0.14, 0)
+				refreshbutton.Size = UDim2.new(0, 50, 0, 14)
+				refreshbutton.ZIndex = 10
+				refreshbutton.Font = Enum.Font.SourceSans
+				refreshbutton.TextSize = 14
+				refreshbutton.TextColor3 = currentText1
+				refreshbutton.TextWrapped = true
+				refreshbutton.BorderSizePixel = 0
 
-			ScrollingFrame.Name = "ScrollingFrame"
-			ScrollingFrame.Parent = background
-			ScrollingFrame.Active = true
-			ScrollingFrame.Size = UDim2.new(1,0,1,0)
-			ScrollingFrame.ZIndex = 10
-			ScrollingFrame.BackgroundTransparency = 1
-			ScrollingFrame.ScrollBarImageColor3 = Color3.new(255,255,255)
-			ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+				background.Name = "background"
+				background.Parent = FRAME
+				background.Active = true
+				background.BackgroundColor3 = currentShade1
+				background.BorderSizePixel = 0
+				background.Position = UDim2.new(0, 0, 1, 0)
+				background.Size = UDim2.new(0, 450, 0, 250)
+				background.ZIndex = 10
+				table.insert(shade1,background)
 
-			UIListLayout.Parent = ScrollingFrame
-			UIListLayout.Name = "UIListLayout"
-			UIListLayout.Padding = UDim.new(0,5)
-			local serverlist = HttpService:JSONDecode(httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId)}))
-			local function addservertemplate()
-				task.spawn(function()
-					for i,v in ipairs(serverlist.data) do
+				ScrollingFrame.Name = "ScrollingFrame"
+				ScrollingFrame.Parent = background
+				ScrollingFrame.Active = true
+				ScrollingFrame.Size = UDim2.new(1,0,1,0)
+				ScrollingFrame.ZIndex = 10
+				ScrollingFrame.BackgroundTransparency = 1
+				ScrollingFrame.ScrollBarImageColor3 = Color3.new(255,255,255)
+				ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
+				UIListLayout.Parent = ScrollingFrame
+				UIListLayout.Name = "UIListLayout"
+				UIListLayout.Padding = UDim.new(0,5)
+				local function addservertemplate()
+					for i,v in ipairs(listbody.data) do
 						local frame1 = Instance.new("Frame")
 						local textlabel = Instance.new("TextLabel")
 						local textlabel2 = Instance.new("TextLabel")
@@ -7062,31 +7063,32 @@ addcmd('serverlist',{'slist'},function(args, speaker)
 						textlabel6.BackgroundTransparency = 1
 						textlabel6.Parent = frame2
 					end
-				end)
-			end
-			addservertemplate()
-			refreshbutton.MouseButton1Click:Connect(function()
-				task.spawn(function()
+				end
+				addservertemplate()
+				refreshbutton.MouseButton1Click:Connect(function()
 					for i,v in pairs(ScrollingFrame:GetChildren()) do
 						if v:IsA("Frame") then
 							v:Destroy()
 						end
 					end
+					listreq = httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId)})
+        			listbody = HttpService:JSONDecode(listreq.Body)
+					task.wait(.5)
+					addservertemplate()
 				end)
-				serverlist = HttpService:JSONDecode(httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId)}))
-				task.wait(.5)
-				addservertemplate()
-			end)
 
-			FRAME:TweenPosition(UDim2.new(0.5, -225, 0, 100), "InOut", "Quart", 0.5, true, nil) 
-			task.wait(0.5)
-			Exit.MouseButton1Click:Connect(function()
-				FRAME:TweenPosition(UDim2.new(0.5, -225, 0, -500), "InOut", "Quart", 0.5, true, nil) 
-				task.wait(0.6)
-				FRAME:Destroy()
-				canOpenServerIist = true
-			end)
-		end)
+				FRAME:TweenPosition(UDim2.new(0.5, -225, 0, 100), "InOut", "Quart", 0.5, true, nil) 
+				task.wait(0.5)
+				Exit.MouseButton1Click:Connect(function()
+					FRAME:TweenPosition(UDim2.new(0.5, -225, 0, -500), "InOut", "Quart", 0.5, true, nil) 
+					task.wait(0.6)
+					FRAME:Destroy()
+					canOpenServerIist = true
+				end)
+			else
+				notify("Error", "Couldn't fetch the server list (See console for more details")
+				print(listreq.StatusCode .. " - " .. listreq.StatusMessage)
+			end
 	else
 		notify("Incompatible Exploit", "Your exploit does not support this command (missing request)")
 	end
